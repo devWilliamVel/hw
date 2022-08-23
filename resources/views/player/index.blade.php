@@ -8,7 +8,7 @@
             </div>
 
             <div class="col-12 d-flex justify-content-center mb-3">
-                <div class="btn btn-success m-1" data-toggle="modal" data-target="#createUserModal">{{ __('player.add_new_player') }}</div>
+                <div class="btn btn-success m-1" data-toggle="modal" data-target="#createPlayerModal">{{ __('player.add_new_player') }}</div>
             </div>
 
             <div class="col-12">
@@ -74,12 +74,12 @@
         </div>
     </div>
 
-    {{-- CREATE USER MODAL --}}
-    <div class="modal fade" id="createUserModal" tabindex="-1" role="dialog" aria-labelledby="createUserModalTitle" aria-hidden="true">
+    {{-- CREATE PLAYER MODAL --}}
+    <div class="modal fade" id="createPlayerModal" tabindex="-1" role="dialog" aria-labelledby="createPlayerModalTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="createUserModalTitle">{{ strtoupper(__('player.add_new_player')) }}</h5>
+                    <h5 class="modal-title" id="createPlayerModalTitle">{{ strtoupper(__('player.add_new_player')) }}</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>

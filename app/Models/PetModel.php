@@ -18,4 +18,173 @@ class PetModel extends Model
         'very_weak_against',
         'weak_against',
     ];
+
+    public function getPetsVSA () : array
+    {
+        return $this->getVSPets($this->very_strong_against ?? '');
+    }
+
+    public function getPetsSA () : array
+    {
+        return $this->getVSPets($this->strong_against ?? '');
+    }
+
+    public function getPetsVWA () : array
+    {
+        return $this->getVSPets($this->very_weak_against ?? '');
+    }
+
+    public function getPetsWA () : array
+    {
+        return $this->getVSPets($this->weak_against ?? '');
+    }
+
+    public function removeVSPet ()
+    {
+        if ( ! empty($this->very_strong_against) )
+            foreach (explode(' ', $this->very_strong_against) as $petId)
+            {
+                $petAux = PetModel::find($petId);
+                $idsVWA = (array)$petAux->very_weak_against;
+
+                if ( count($idsVWA) )
+                {
+                    $key = array_search($this->id, $idsVWA);
+
+                    if ( $key !== false )
+                    {
+                        if ( count($idsVWA) > 1 )
+                        {
+                            $last = $idsVWA[count($idsVWA)-1];
+                            $idsVWA[count($idsVWA)-1] = $idsVWA[$key];
+                            $idsVWA[$key] = $last;
+                        }
+
+                        array_pop($idsVWA);
+
+                        $petAux->very_weak_against = implode(' ', $idsVWA);
+                        $petAux->save();
+                    }
+                }
+            }
+
+        if ( ! empty($this->strong_against) )
+            foreach (explode(' ', $this->strong_against) as $petId)
+            {
+                $petAux = PetModel::find($petId);
+                $idsWA = (array)$petAux->weak_against;
+
+                if ( count($idsWA) )
+                {
+                    $key = array_search($this->id, $idsWA);
+
+                    if ( $key !== false )
+                    {
+                        if ( count($idsWA) > 1 )
+                        {
+                            $last = $idsWA[count($idsWA)-1];
+                            $idsWA[count($idsWA)-1] = $idsWA[$key];
+                            $idsWA[$key] = $last;
+                        }
+
+                        array_pop($idsWA);
+
+                        $petAux->weak_against = implode(' ', $idsWA);
+                        $petAux->save();
+                    }
+                }
+            }
+
+        if ( ! empty($this->very_weak_against) )
+            foreach (explode(' ', $this->very_weak_against) as $petId)
+            {
+                $petAux = PetModel::find($petId);
+                $idsVSA = (array)$petAux->very_strong_against;
+
+                if ( count($idsVSA) )
+                {
+                    $key = array_search($this->id, $idsVSA);
+
+                    if ( $key !== false )
+                    {
+                        if ( count($idsVSA) > 1 )
+                        {
+                            $last = $idsVSA[count($idsVSA)-1];
+                            $idsVSA[count($idsVSA)-1] = $idsVSA[$key];
+                            $idsVSA[$key] = $last;
+                        }
+
+                        array_pop($idsVSA);
+
+                        $petAux->very_strong_against = implode(' ', $idsVSA);
+                        $petAux->save();
+                    }
+                }
+            }
+
+        if ( ! empty($this->weak_against) )
+            foreach (explode(' ', $this->weak_against) as $petId)
+            {
+                $petAux = PetModel::find($petId);
+                $idsSA = (array)$petAux->strong_against;
+
+                if ( count($idsSA) )
+                {
+                    $key = array_search($this->id, $idsSA);
+
+                    if ( $key !== false )
+                    {
+                        if ( count($idsSA) > 1 )
+                        {
+                            $last = $idsSA[count($idsSA)-1];
+                            $idsSA[count($idsSA)-1] = $idsSA[$key];
+                            $idsSA[$key] = $last;
+                        }
+
+                        array_pop($idsSA);
+
+                        $petAux->strong_against = implode(' ', $idsSA);
+                        $petAux->save();
+                    }
+                }
+            }
+    }
+
+    public function addVSPet (int $againstPetId, $field)
+    {
+        $pet = PetModel::find($againstPetId);
+        if ( empty($pet->$field) )
+        {
+            $pet->$field = $this->id;
+            $pet->save();
+        }
+        else
+        {
+            $ids = explode(' ', $pet->$field);
+            if ( ! in_array($this->id, $ids) )
+            {
+                $pet->$field .= ' ' . $this->id;
+                $pet->save();
+            }
+        }
+    }
+
+    private function getVSPets ( string $idPets ) : array
+    {
+        $result = [];
+        if ( ! empty($idPets) )
+        {
+            $arr = explode(' ', $idPets);
+            foreach ($arr as $id)
+            {
+                try
+                {
+                    $result[] = PetModel::find($id);
+                }
+                catch ( \Exception $e ) {}
+            }
+        }
+
+        return $result;
+    }
 }

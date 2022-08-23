@@ -1,7 +1,10 @@
 <?php
 
 use App\Http\Controllers\GuildController;
+use App\Http\Controllers\HeroController;
+use App\Http\Controllers\PetController;
 use App\Http\Controllers\PlayerController;
+use App\Http\Controllers\TitanController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -52,5 +55,30 @@ Route::prefix('player')->name('player')->group(function(){
     Route::post('remove/pet/{playerId}/{petId}', [PlayerController::class, 'removePet'])->name('.remove.pet');
 });
 
+Route::get('heroes', [HeroController::class, 'index'])->name('heroes');
+Route::prefix('hero')->name('hero')->group(function(){
+    Route::get('create', [HeroController::class, 'create'])->name('.create');
+    Route::post('store', [HeroController::class, 'store'])->name('.store');
+    Route::get('edit/{id}', [HeroController::class, 'edit'])->name('.edit');
+    Route::post('update/{id}', [HeroController::class, 'update'])->name('.update');
+    Route::post('delete/{id}', [HeroController::class, 'delete'])->name('.delete');
+});
 
+Route::get('titans', [TitanController::class, 'index'])->name('titans');
+Route::prefix('titan')->name('titan')->group(function(){
+    Route::get('create', [TitanController::class, 'create'])->name('.create');
+    Route::post('store', [TitanController::class, 'store'])->name('.store');
+    Route::get('edit/{id}', [TitanController::class, 'edit'])->name('.edit');
+    Route::post('update/{id}', [TitanController::class, 'update'])->name('.update');
+    Route::post('delete/{id}', [TitanController::class, 'delete'])->name('.delete');
+});
+
+Route::get('pets', [PetController::class, 'index'])->name('pets');
+Route::prefix('pet')->name('pet')->group(function(){
+    Route::get('create', [PetController::class, 'create'])->name('.create');
+    Route::post('store', [PetController::class, 'store'])->name('.store');
+    Route::get('edit/{id}', [PetController::class, 'edit'])->name('.edit');
+    Route::post('update/{id}', [PetController::class, 'update'])->name('.update');
+    Route::post('delete/{id}', [PetController::class, 'delete'])->name('.delete');
+});
 

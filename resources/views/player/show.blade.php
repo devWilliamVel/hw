@@ -43,7 +43,7 @@
                 </table>
 
                 <div class="d-flex justify-content-center">
-                    <div class="btn btn-primary" data-toggle="modal" data-target="#addHeroModal">{{ __('hero.add') }}</div>
+                    <div class="btn btn-primary" data-toggle="modal" data-target="#addHeroModal">{{ __('hero.add_hero') }}</div>
                 </div>
             </div>
 
