@@ -13,7 +13,6 @@ class WarDefenseHeroModel extends Model
 
     protected $fillable = [
         'player_id',
-        'hero_id',
-        'power',
+        'player_hero_id',
     ];
 }

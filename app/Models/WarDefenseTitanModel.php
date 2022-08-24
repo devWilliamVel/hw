@@ -13,7 +13,6 @@ class WarDefenseTitanModel extends Model
 
     protected $fillable = [
         'player_id',
-        'titan_id',
-        'power',
+        'player_titan_id',
     ];
 }

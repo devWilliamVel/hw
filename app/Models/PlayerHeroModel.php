@@ -9,12 +9,15 @@ class PlayerHeroModel extends Model
     public $timestamps = false;
 
     protected $table = 'players_heroes';
+    protected $primaryKey = 'id';
 
     protected $fillable = [
         'player_id',
         'hero_id',
         'level',
         'power',
+        'stars',
+        'range_color',
         'stat_vitality',
         'stat_physical_attack',
         'stat_magik_attack',

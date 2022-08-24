@@ -1,0 +1,36 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+class CreateTitansTable extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('titans', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->tinyInteger('element');
+            $table->string('very_strong_against')->default('');
+            $table->string('strong_against')->default('');
+            $table->string('very_weak_against')->default('');
+            $table->string('weak_against')->default('');
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists('titans');
+    }
+}

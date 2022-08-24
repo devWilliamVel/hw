@@ -13,7 +13,6 @@ class WarDefensePetModel extends Model
 
     protected $fillable = [
         'player_id',
-        'pet_id',
-        'power',
+        'player_pet_id',
     ];
 }
