@@ -35,19 +35,19 @@ class PlayerController extends Controller
         $heroes = DB::table(app(HeroModel::class)->getTable() . " AS h")
             ->join(app(PlayerHeroModel::class)->getTable() . " AS ph", 'ph.hero_id', '=', 'h.id')
             ->where('ph.player_id', '=', $player->id)
-            ->select('ph.hero_id as id', 'ph.level', 'h.name', 'ph.power')
+            ->select('ph.hero_id as id', 'ph.level', 'h.name', 'ph.power', 'ph.stars', 'ph.range_color')
             ->get();
 
         $pets = DB::table(app(PetModel::class)->getTable() . " AS p")
             ->join(app(PlayerPetModel::class)->getTable() . " AS pp", 'pp.pet_id', '=', 'p.id')
             ->where('pp.player_id', '=', $player->id)
-            ->select('pp.pet_id as id', 'pp.level', 'p.name', 'pp.power')
+            ->select('pp.pet_id as id', 'pp.level', 'p.name', 'pp.power', 'pp.stars', 'pp.range_color')
             ->get();
 
         $titans = DB::table(app(TitanModel::class)->getTable() . " AS t")
             ->join(app(PlayerTitanModel::class)->getTable() . " AS pt", 'pt.titan_id', '=', 't.id')
             ->where('pt.player_id', '=', $player->id)
-            ->select('pt.titan_id as id', 'pt.level', 't.name', 't.element', 'pt.power')
+            ->select('pt.titan_id as id', 'pt.level', 't.name', 't.element', 'pt.power', 'pt.stars')
             ->get();
 
         $missingHeroes = DB::table(app(HeroModel::class)->getTable())
@@ -68,6 +68,12 @@ class PlayerController extends Controller
             ->select('id', 'name')
             ->get();
 
+        $heroStars = HeroModel::getStars();
+        $heroRanges = HeroModel::getRanges();
+        $petStars = PetModel::getStars();
+        $petRanges = PetModel::getRanges();
+        $titanStars = TitanModel::getStars();
+
         return view('player.show')
             ->with('player', $player)
             ->with('guild', $guild)
@@ -76,7 +82,12 @@ class PlayerController extends Controller
             ->with('titans', $titans)
             ->with('missingHeroes', $missingHeroes)
             ->with('missingTitans', $missingTitans)
-            ->with('missingPets', $missingPets);
+            ->with('missingPets', $missingPets)
+            ->with('heroStars', $heroStars)
+            ->with('heroRanges', $heroRanges)
+            ->with('petStars', $petStars)
+            ->with('petRanges', $petRanges)
+            ->with('titanStars', $titanStars);
     }
 
     public function store ( Request $request )
@@ -183,15 +194,13 @@ class PlayerController extends Controller
 
     public function addHero ( Request $request, int $playerId)
     {
-        $heroId = intval($request->input('addHeroId'));
-        $level = intval($request->input('newHeroLevel'));
-        $power = intval($request->input('newHeroPower'));
-
         PlayerHeroModel::create([
             'player_id' => $playerId,
-            'hero_id' => $heroId,
-            'level' => $level,
-            'power' => $power,
+            'hero_id' => intval($request->input('addHeroId')),
+            'level' => intval($request->input('newHeroLevel')),
+            'power' => intval($request->input('newHeroPower')),
+            'stars' => intval($request->input('newHeroStars')),
+            'range_color' => intval($request->input('newHeroRange')),
         ]);
 
         return back();
@@ -199,15 +208,12 @@ class PlayerController extends Controller
 
     public function addTitan ( Request $request, int $playerId)
     {
-        $titanId = intval($request->input('addTitanId'));
-        $level = intval($request->input('newTitanLevel'));
-        $power = intval($request->input('newTitanPower'));
-
         PlayerTitanModel::create([
             'player_id' => $playerId,
-            'titan_id' => $titanId,
-            'level' => $level,
-            'power' => $power,
+            'titan_id' => intval($request->input('addTitanId')),
+            'level' => intval($request->input('newTitanLevel')),
+            'power' => intval($request->input('newTitanPower')),
+            'stars' => intval($request->input('newTitanPower')),
         ]);
 
         return back();
@@ -215,15 +221,13 @@ class PlayerController extends Controller
 
     public function addPet ( Request $request, int $playerId)
     {
-        $petId = intval($request->input('addPetId'));
-        $level = intval($request->input('newPetLevel'));
-        $power = intval($request->input('newPetPower'));
-
         PlayerPetModel::create([
             'player_id' => $playerId,
-            'pet_id' => $petId,
-            'level' => $level,
-            'power' => $power,
+            'pet_id' => intval($request->input('addPetId')),
+            'level' => intval($request->input('newPetLevel')),
+            'power' => intval($request->input('newPetPower')),
+            'stars' => intval($request->input('newPetStars')),
+            'range_color' => intval($request->input('newPetRange')),
         ]);
 
         return back();
@@ -232,14 +236,14 @@ class PlayerController extends Controller
     public function updateHero ( Request $request, int $playerId)
     {
         $heroId = intval($request->input('editHeroId'));
-        $level = intval($request->input('editHeroLevel'));
-        $power = intval($request->input('editHeroPower'));
 
         PlayerHeroModel::where('player_id', '=', $playerId)
             ->where('hero_id', '=', $heroId)
             ->update([
-                'level' => $level,
-                'power' => $power,
+                'level' => intval($request->input('editHeroLevel')),
+                'power' => intval($request->input('editHeroPower')),
+                'stars' => intval($request->input('editHeroStars')),
+                'range_color' => intval($request->input('editHeroRange')),
             ]);
 
         return back();
@@ -248,14 +252,13 @@ class PlayerController extends Controller
     public function updateTitan ( Request $request, int $playerId)
     {
         $titanId = intval($request->input('editTitanId'));
-        $level = intval($request->input('editTitanLevel'));
-        $power = intval($request->input('editTitanPower'));
 
         PlayerTitanModel::where('player_id', '=', $playerId)
             ->where('titan_id', '=', $titanId)
             ->update([
-                'level' => $level,
-                'power' => $power,
+                'level' => intval($request->input('editTitanLevel')),
+                'power' => intval($request->input('editTitanPower')),
+                'stars' => intval($request->input('editTitanStars')),
             ]);
 
         return back();
@@ -264,14 +267,14 @@ class PlayerController extends Controller
     public function updatePet ( Request $request, int $playerId)
     {
         $petId = intval($request->input('editPetId'));
-        $level = intval($request->input('editPetLevel'));
-        $power = intval($request->input('editPetPower'));
 
         PlayerPetModel::where('player_id', '=', $playerId)
             ->where('pet_id', '=', $petId)
             ->update([
-                'level' => $level,
-                'power' => $power,
+                'level' => intval($request->input('editPetLevel')),
+                'power' => intval($request->input('editPetPower')),
+                'stars' => intval($request->input('editPetStars')),
+                'range_color' => intval($request->input('editPetRange')),
             ]);
 
         return back();

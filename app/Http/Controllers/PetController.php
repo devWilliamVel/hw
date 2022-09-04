@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\HeroesTeamModel;
-use App\Models\HeroesTeamVSSimulatorModel;
 use App\Models\PetModel;
 use App\Models\PlayerPetModel;
+use App\Models\TeamHeroesFullInformationModel;
+use App\Models\TeamHeroesFullPowerModel;
+use App\Models\TeamHeroesWithPowerModel;
 use App\Models\WarDefensePetModel;
 use Illuminate\Http\Request;
 
@@ -178,9 +179,26 @@ class PetController extends Controller
         {
             $pet->removeVSPet();
             PlayerPetModel::where('pet_id', '=', $pet->id)->delete();
-            WarDefensePetModel::where('pet_id', '=', $pet->id)->delete();
-            HeroesTeamModel::where('pet_id', '=', $pet->id)->delete();
-            HeroesTeamVSSimulatorModel::where('pet_id', '=', $pet->id)->delete();
+            WarDefensePetModel::where('player_pet_id', '=', $pet->id)->delete();
+            TeamHeroesFullPowerModel::where('winner_pet_id', '=', $pet->id)
+                ->orWhere('looser_pet_id', '=', $pet->id)
+                ->delete();
+            TeamHeroesWithPowerModel::where('winner_pet_id', '=', $pet->id)
+                ->orWhere('looser_pet_id', '=', $pet->id)
+                ->delete();
+            TeamHeroesFullInformationModel::where('winner_a_hero_pet', '=', $pet->id)
+                ->orWhere('winner_b_hero_pet', '=', $pet->id)
+                ->orWhere('winner_c_hero_pet', '=', $pet->id)
+                ->orWhere('winner_d_hero_pet', '=', $pet->id)
+                ->orWhere('winner_e_hero_pet', '=', $pet->id)
+                ->orWhere('winner_pet_id', '=', $pet->id)
+                ->orWhere('looser_a_hero_pet', '=', $pet->id)
+                ->orWhere('looser_b_hero_pet', '=', $pet->id)
+                ->orWhere('looser_c_hero_pet', '=', $pet->id)
+                ->orWhere('looser_d_hero_pet', '=', $pet->id)
+                ->orWhere('looser_e_hero_pet', '=', $pet->id)
+                ->orWhere('looser_pet_id', '=', $pet->id)
+                ->delete();
             $pet->delete();
         }
 

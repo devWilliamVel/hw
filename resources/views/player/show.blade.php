@@ -23,17 +23,22 @@
                         <th>{{ strtoupper(__('general.name')) }}</th>
                         <th>{{ strtoupper(__('general.level')) }}</th>
                         <th>{{ strtoupper(__('general.power')) }}</th>
+                        <th>{{ strtoupper(__('general.stars')) }}</th>
+                        <th>{{ strtoupper(__('general.range')) }}</th>
                         <th>{{ strtoupper(__('table.actions')) }}</th>
                     </tr>
                     </thead>
                     <tbody>
+                    @php($heroModel = new \App\Models\HeroModel)
                     @foreach ( $heroes as $hero )
                         <tr>
                             <td>{{ $hero->name }}</td>
                             <td>{{ $hero->level }}</td>
                             <td>{{ $hero->power }}</td>
+                            <td>{{ $hero->stars }}</td>
+                            <td>{{ $heroModel->getRange($hero->range_color) }}</td>
                             <td>
-                                <div class="btn btn-sm btn-primary" onclick="editHeroModalShow({{ $hero->id }}, '{{ $hero->name }}', {{ $hero->power }}, {{ $hero->level }})"><i class="fas fa-edit"></i></div>
+                                <div class="btn btn-sm btn-primary" onclick="editHeroModalShow({{ $hero->id }}, '{{ $hero->name }}', {{ $hero->power }}, {{ $hero->level }}, {{ $hero->stars }}, {{ $hero->range_color }})"><i class="fas fa-edit"></i></div>
                                 <div class="btn btn-sm btn-danger" onclick="deleteHero({{ $hero->id }})"><i class="fas fa-trash-alt"></i></div>
                                 <form class="d-none" id="deleteHeroForm_{{ $hero->id }}" action="{{ route('player.remove.hero', [$player->id, $hero->id]) }}" method="post">@csrf</form>
                             </td>
@@ -57,18 +62,21 @@
                         <th>{{ strtoupper(__('general.element')) }}</th>
                         <th>{{ strtoupper(__('general.level')) }}</th>
                         <th>{{ strtoupper(__('general.power')) }}</th>
+                        <th>{{ strtoupper(__('general.stars')) }}</th>
                         <th>{{ strtoupper(__('table.actions')) }}</th>
                     </tr>
                     </thead>
                     <tbody>
+                    @php($titanModel = new \App\Models\TitanModel)
                     @foreach ( $titans as $titan )
                         <tr>
                             <td>{{ $titan->name }}</td>
-                            <td>{{ $titan->element }}</td>
+                            <td>{{ $titanModel->getElement($titan->element) }}</td>
                             <td>{{ $titan->level }}</td>
                             <td>{{ $titan->power }}</td>
+                            <td>{{ $titan->stars }}</td>
                             <td>
-                                <div class="btn btn-sm btn-primary" onclick="editTitanModalShow({{ $titan->id }}, '{{ $titan->name }}', {{ $titan->power }}, {{ $titan->level }})"><i class="fas fa-edit"></i></div>
+                                <div class="btn btn-sm btn-primary" onclick="editTitanModalShow({{ $titan->id }}, '{{ $titan->name }}', '{{ $titanModel->getElement($titan->element) }}', {{ $titan->power }}, {{ $titan->level }}, {{ $titan->stars }})"><i class="fas fa-edit"></i></div>
                                 <div class="btn btn-sm btn-danger" onclick="deleteTitan({{ $titan->id }})"><i class="fas fa-trash-alt"></i></div>
                                 <form class="d-none" id="deleteTitanForm_{{ $titan->id }}" action="{{ route('player.remove.titan', [$player->id, $titan->id]) }}" method="post">@csrf</form>
                             </td>
@@ -91,17 +99,22 @@
                         <th>{{ strtoupper(__('general.name')) }}</th>
                         <th>{{ strtoupper(__('general.level')) }}</th>
                         <th>{{ strtoupper(__('general.power')) }}</th>
+                        <th>{{ strtoupper(__('general.stars')) }}</th>
+                        <th>{{ strtoupper(__('general.range')) }}</th>
                         <th>{{ strtoupper(__('table.actions')) }}</th>
                     </tr>
                     </thead>
                     <tbody>
+                    @php($petModel = new \App\Models\PetModel)
                     @foreach ( $pets as $pet )
                         <tr>
                             <td>{{ $pet->name }}</td>
                             <td>{{ $pet->level }}</td>
                             <td>{{ $pet->power }}</td>
+                            <td>{{ $pet->stars }}</td>
+                            <td>{{ $petModel->getRange($pet->range_color) }}</td>
                             <td>
-                                <div class="btn btn-sm btn-primary" onclick="editPetModalShow({{ $pet->id }}, '{{ $pet->name }}', {{ $pet->power }}, {{ $pet->level }})"><i class="fas fa-edit"></i></div>
+                                <div class="btn btn-sm btn-primary" onclick="editPetModalShow({{ $pet->id }}, '{{ $pet->name }}', {{ $pet->power }}, {{ $pet->level }}, {{ $pet->stars }}, {{ $pet->range_color }})"><i class="fas fa-edit"></i></div>
                                 <div class="btn btn-sm btn-danger" onclick="deletePet({{ $pet->id }})"><i class="fas fa-trash-alt"></i></div>
                                 <form class="d-none" id="deletePetForm_{{ $pet->id }}" action="{{ route('player.remove.pet', [$player->id, $pet->id]) }}" method="post">@csrf</form>
                             </td>
@@ -147,6 +160,22 @@
                             <label for="newHeroPower">{{ ucfirst( __('general.power')) }}</label>
                             <input type="number" class="form-control" id="newHeroPower" name="newHeroPower" required>
                         </div>
+                        <div class="form-group">
+                            <label for="newHeroStars">{{ ucfirst( __('general.stars')) }}</label>
+                            <select class="form-control" id="newHeroStars" name="newHeroStars" required>
+                                @foreach( $heroStars as $heroStar )
+                                    <option value="{{ $heroStar }}">{{ $heroStar }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="newHeroRange">{{ ucfirst( __('general.range')) }}</label>
+                            <select class="form-control" id="newHeroRange" name="newHeroRange" required>
+                                @foreach( $heroRanges as $key=>$heroRange )
+                                    <option value="{{ $key }}">{{ $heroRange }}</option>
+                                @endforeach
+                            </select>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ ucfirst(__('general.close')) }}</button>
@@ -181,6 +210,22 @@
                         <div class="form-group">
                             <label for="editHeroPower">{{ ucfirst( __('general.power')) }}</label>
                             <input type="number" class="form-control" id="editHeroPower" name="editHeroPower" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="editHeroStars">{{ ucfirst( __('general.stars')) }}</label>
+                            <select class="form-control" id="editHeroStars" name="editHeroStars" required>
+                                @foreach( $heroStars as $heroStar )
+                                    <option value="{{ $heroStar }}">{{ $heroStar }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="editHeroRange">{{ ucfirst( __('general.range')) }}</label>
+                            <select class="form-control" id="editHeroRange" name="editHeroRange" required>
+                                @foreach( $heroRanges as $key=>$heroRange )
+                                    <option value="{{ $key }}">{{ $heroRange }}</option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -222,6 +267,14 @@
                             <label for="newTitanPower">{{ ucfirst( __('general.power')) }}</label>
                             <input type="number" class="form-control" id="newTitanPower" name="newTitanPower" required>
                         </div>
+                        <div class="form-group">
+                            <label for="newTitanStars">{{ ucfirst( __('general.stars')) }}</label>
+                            <select class="form-control" id="newTitanStars" name="newTitanStars" required>
+                                @foreach( $titanStars as $titanStar )
+                                    <option value="{{ $titanStar }}">{{ $titanStar }}</option>
+                                @endforeach
+                            </select>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ ucfirst(__('general.close')) }}</button>
@@ -250,12 +303,24 @@
                             <input type="text" class="form-control" id="editTitanName" disabled>
                         </div>
                         <div class="form-group">
+                            <label for="editTitanElement">{{ ucfirst( __('titan.element')) }}</label>
+                            <input type="text" class="form-control" id="editTitanElement" disabled>
+                        </div>
+                        <div class="form-group">
                             <label for="editTitanLevel">{{ ucfirst( __('general.level')) }}</label>
                             <input type="number" class="form-control" id="editTitanLevel" name="editTitanLevel" required>
                         </div>
                         <div class="form-group">
                             <label for="editTitanPower">{{ ucfirst( __('general.power')) }}</label>
                             <input type="number" class="form-control" id="editTitanPower" name="editTitanPower" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="editTitanStars">{{ ucfirst( __('general.stars')) }}</label>
+                            <select class="form-control" id="editTitanStars" name="editTitanStars" required>
+                                @foreach( $titanStars as $titanStar )
+                                    <option value="{{ $titanStar }}">{{ $titanStar }}</option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -281,7 +346,7 @@
                     <div class="modal-body">
                         @csrf
                         <div class="form-group">
-                            <label for="addPetId">{{ ucfirst( __('hero.select_hero')) }}</label>
+                            <label for="addPetId">{{ ucfirst( __('pet.select_pet')) }}</label>
                             <select class="form-control" id="addPetId" name="addPetId" required>
                                 <option value="">{{ __('general.choose_option') }}</option>
                                 @foreach( $missingPets as $pet )
@@ -296,6 +361,22 @@
                         <div class="form-group">
                             <label for="newPetPower">{{ ucfirst( __('general.power')) }}</label>
                             <input type="number" class="form-control" id="newPetPower" name="newPetPower" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="newPetStars">{{ ucfirst( __('general.stars')) }}</label>
+                            <select class="form-control" id="newPetStars" name="newPetStars" required>
+                                @foreach( $petStars as $petStar )
+                                    <option value="{{ $petStar }}">{{ $petStar }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="newPetRange">{{ ucfirst( __('general.range')) }}</label>
+                            <select class="form-control" id="newPetRange" name="newPetRange" required>
+                                @foreach( $petRanges as $key=>$petRange )
+                                    <option value="{{ $key }}">{{ $petRange }}</option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -331,6 +412,22 @@
                         <div class="form-group">
                             <label for="editPetPower">{{ ucfirst( __('general.power')) }}</label>
                             <input type="number" class="form-control" id="editPetPower" name="editPetPower" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="editPetStars">{{ ucfirst( __('general.stars')) }}</label>
+                            <select class="form-control" id="editPetStars" name="editPetStars" required>
+                                @foreach( $petStars as $petStar )
+                                    <option value="{{ $petStar }}">{{ $petStar }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="editPetRange">{{ ucfirst( __('general.range')) }}</label>
+                            <select class="form-control" id="editPetRange" name="editPetRange" required>
+                                @foreach( $petRanges as $key=>$petRange )
+                                    <option value="{{ $key }}">{{ $petRange }}</option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -401,29 +498,35 @@
                 $('#deletePetForm_' + _petId).submit();
         }
 
-        function editHeroModalShow ( _heroId, _heroName, _oldPower, _oldLevel ) {
+        function editHeroModalShow ( _heroId, _heroName, _oldPower, _oldLevel, _oldStars, _oldRange ) {
             $('#editHeroId').val(_heroId);
             $('#editHeroName').val(_heroName);
             $('#editHeroPower').val(_oldPower);
             $('#editHeroLevel').val(_oldLevel);
+            $('#editHeroStars').val(_oldStars);
+            $('#editHeroRange').val(_oldRange);
 
             $('#editHeroModal').modal('show');
         }
 
-        function editTitanModalShow ( _titanId, _titanName, _oldPower, _oldLevel ) {
+        function editTitanModalShow ( _titanId, _titanName, _oldElement, _oldPower, _oldLevel, _oldStars ) {
             $('#editTitanId').val(_titanId);
             $('#editTitanName').val(_titanName);
+            $('#editTitanElement').val(_oldElement);
             $('#editTitanPower').val(_oldPower);
             $('#editTitanLevel').val(_oldLevel);
+            $('#editTitanStars').val(_oldStars);
 
             $('#editTitanModal').modal('show');
         }
 
-        function editPetModalShow ( _petId, _petName, _oldPower, _oldLevel ) {
+        function editPetModalShow ( _petId, _petName, _oldPower, _oldLevel, _oldStars, _oldRange ) {
             $('#editPetId').val(_petId);
             $('#editPetName').val(_petName);
             $('#editPetPower').val(_oldPower);
             $('#editPetLevel').val(_oldLevel);
+            $('#editPetStars').val(_oldStars);
+            $('#editPetRange').val(_oldRange);
 
             $('#editPetModal').modal('show');
         }

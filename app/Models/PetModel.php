@@ -19,6 +19,59 @@ class PetModel extends Model
         'weak_against',
     ];
 
+    const START_ONE = 1;
+    const START_TWO = 2;
+    const START_THREE = 3;
+    const START_FOUR = 4;
+    const START_FIVE = 5;
+    const START_SIX = 6;
+
+    const RANGE_GREY_0 = 1;
+    const RANGE_GREEN_0 = 2;
+    const RANGE_GREEN_1 = 3;
+    const RANGE_BLUE_0 = 4;
+    const RANGE_BLUE_1 = 5;
+    const RANGE_BLUE_2 = 6;
+    const RANGE_PURPLE_0 = 7;
+    const RANGE_PURPLE_1 = 8;
+    const RANGE_PURPLE_2 = 9;
+    const RANGE_PURPLE_3 = 10;
+
+    public static function getStars ()
+    {
+        return [
+            self::START_ONE,
+            self::START_TWO,
+            self::START_THREE,
+            self::START_FOUR,
+            self::START_FIVE,
+            self::START_SIX,
+        ];
+    }
+
+    public static function getRanges ()
+    {
+        return [
+            self::RANGE_GREY_0 => __('general.grey_0'),
+            self::RANGE_GREEN_0 => __('general.green_0'),
+            self::RANGE_GREEN_1 => __('general.green_1'),
+            self::RANGE_BLUE_0 => __('general.blue_0'),
+            self::RANGE_BLUE_1 => __('general.blue_1'),
+            self::RANGE_BLUE_2 => __('general.blue_2'),
+            self::RANGE_PURPLE_0 => __('general.purple_0'),
+            self::RANGE_PURPLE_1 => __('general.purple_1'),
+            self::RANGE_PURPLE_2 => __('general.purple_2'),
+            self::RANGE_PURPLE_3 => __('general.purple_3'),
+        ];
+    }
+
+    public function getRange ( $range )
+    {
+        $ranges = self::getRanges();
+
+        return $ranges[$range];
+    }
+
     public function getPetsVSA () : array
     {
         return $this->getVSPets($this->very_strong_against ?? '');

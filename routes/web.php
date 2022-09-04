@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CombatsController;
 use App\Http\Controllers\GuildController;
 use App\Http\Controllers\HeroController;
 use App\Http\Controllers\PetController;
@@ -82,3 +83,15 @@ Route::prefix('pet')->name('pet')->group(function(){
     Route::post('delete/{id}', [PetController::class, 'delete'])->name('.delete');
 });
 
+Route::prefix('combats')->name('combats')->group(function(){
+    Route::get('heroes', [CombatsController::class, 'heroesCombats'])->name('.heroes');
+    Route::post('heroes/store', [CombatsController::class, 'storeHeroesCombatFullPower'])->name('.heroes.store');
+    Route::post('heroes/store-with-power', [CombatsController::class, 'storeHeroesCombatWithPower'])->name('.heroes.storeWithPower');
+    Route::post('heroes/store-full-information', [CombatsController::class, 'storeHeroesCombatFullInformation'])->name('.heroes.storeFullInformation');
+
+    Route::get('titans', [CombatsController::class, 'titansCombats'])->name('.titans');
+    Route::post('titans/store', [CombatsController::class, 'storeTitansCombatFullPower'])->name('.titans.store');
+    Route::post('titans/store-with-power', [CombatsController::class, 'storeTitansCombatWithPower'])->name('.titans.storeWithPower');
+    Route::post('titans/store-full-information', [CombatsController::class, 'storeTitansCombatFullInformation'])->name('.titans.storeFullInformation');
+});
+//Route::prefix('pet')->name('pet')->group(function(){});

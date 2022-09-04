@@ -295,6 +295,27 @@ return [
             'label_color' => 'success',
         ],*/
         [
+            'text' => 'PERSONAJES',
+            'icon' => 'fas fa-fw fa-user',
+            'submenu' => [
+                [
+                    'text' => 'Heroes',
+                    'url'  => 'heroes',
+                    'icon' => 'fas fa-fw fa-user',
+                ],
+                [
+                    'text' => 'Mascotas',
+                    'url'  => 'pets',
+                    'icon' => 'fas fa-fw fa-user',
+                ],
+                [
+                    'text' => 'Titanes',
+                    'url'  => 'titans',
+                    'icon' => 'fas fa-fw fa-user',
+                ],
+            ]
+        ],
+        [
             'text' => 'GREMIOS',
             'icon' => 'fas fa-fw fa-user',
             'submenu' => [
@@ -324,12 +345,18 @@ return [
         [
             'text' => 'COMBATES',
             'icon' => 'fas fa-fw fa-user',
-            'submenu' => []
-        ],
-        [
-            'text' => 'GREMIOS',
-            'icon' => 'fas fa-fw fa-user',
-            'submenu' => []
+            'submenu' => [
+                [
+                    'text' => 'entre heroes',
+                    'url'  => 'combats/heroes',
+                    'icon' => 'fas fa-fw fa-user',
+                ],
+                [
+                    'text' => 'entre titanes',
+                    'url'  => 'combats/titans',
+                    'icon' => 'fas fa-fw fa-user',
+                ],
+            ]
         ],
         /*[
             'text' => 'LOS ZORROS',

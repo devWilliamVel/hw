@@ -341,7 +341,8 @@
                 _sa,
                 _vwa,
                 _wa,
-                _name = $('#titanName').val().trim();
+                _name = $('#titanName').val().trim(),
+                _element = parseInt($('#titanElement').val());
 
             if ( _name.length < 2 ) {
                 alert('{{ ucfirst(__('general.name_min_length_two')) }}');
@@ -377,7 +378,8 @@
                 'sa': _sa,
                 'vwa': _vwa,
                 'wa': _wa,
-                'name': _name
+                'name': _name,
+                'element': _element
             };
 
             $.post('{{ route('titan.store') }}', _params, function (_data) {

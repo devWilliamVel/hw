@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\PlayerTitanModel;
 use App\Models\TitanModel;
-use App\Models\TitansTeamModel;
-use App\Models\TitansTeamVSSimulatorModel;
+use App\Models\TeamTitansFullPowerModel;
+use App\Models\TeamTitansWithPowerModel;
+use App\Models\TeamTitansFullInformationModel;
 use App\Models\WarDefenseTitanModel;
 use Illuminate\Http\Request;
 
@@ -191,18 +192,39 @@ class TitanController extends Controller
         {
             $titan->removeVSTitan();
             PlayerTitanModel::where('titan_id', '=', $titan->id)->delete();
-            WarDefenseTitanModel::where('titan_id', '=', $titan->id)->delete();
-            TitansTeamModel::where('a_titan_id', '=', $titan->id)
-                ->orWhere('b_titan_id', '=', $titan->id)
-                ->orWhere('c_titan_id', '=', $titan->id)
-                ->orWhere('d_titan_id', '=', $titan->id)
-                ->orWhere('e_titan_id', '=', $titan->id)
+            WarDefenseTitanModel::where('player_titan_id', '=', $titan->id)->delete();
+            TeamTitansFullPowerModel::where('winner_a_titan_id', '=', $titan->id)
+                ->orWhere('winner_b_titan_id', '=', $titan->id)
+                ->orWhere('winner_c_titan_id', '=', $titan->id)
+                ->orWhere('winner_d_titan_id', '=', $titan->id)
+                ->orWhere('winner_e_titan_id', '=', $titan->id)
+                ->orWhere('looser_a_titan_id', '=', $titan->id)
+                ->orWhere('looser_b_titan_id', '=', $titan->id)
+                ->orWhere('looser_c_titan_id', '=', $titan->id)
+                ->orWhere('looser_d_titan_id', '=', $titan->id)
+                ->orWhere('looser_e_titan_id', '=', $titan->id)
                 ->delete();
-            TitansTeamVSSimulatorModel::where('a_titan_id', '=', $titan->id)
-                ->orWhere('b_titan_id', '=', $titan->id)
-                ->orWhere('c_titan_id', '=', $titan->id)
-                ->orWhere('d_titan_id', '=', $titan->id)
-                ->orWhere('e_titan_id', '=', $titan->id)
+            TeamTitansWithPowerModel::where('winner_a_titan_id', '=', $titan->id)
+                ->orWhere('winner_b_titan_id', '=', $titan->id)
+                ->orWhere('winner_c_titan_id', '=', $titan->id)
+                ->orWhere('winner_d_titan_id', '=', $titan->id)
+                ->orWhere('winner_e_titan_id', '=', $titan->id)
+                ->orWhere('looser_a_titan_id', '=', $titan->id)
+                ->orWhere('looser_b_titan_id', '=', $titan->id)
+                ->orWhere('looser_c_titan_id', '=', $titan->id)
+                ->orWhere('looser_d_titan_id', '=', $titan->id)
+                ->orWhere('looser_e_titan_id', '=', $titan->id)
+                ->delete();
+            TeamTitansFullInformationModel::where('winner_a_titan_id', '=', $titan->id)
+                ->orWhere('winner_b_titan_id', '=', $titan->id)
+                ->orWhere('winner_c_titan_id', '=', $titan->id)
+                ->orWhere('winner_d_titan_id', '=', $titan->id)
+                ->orWhere('winner_e_titan_id', '=', $titan->id)
+                ->orWhere('looser_a_titan_id', '=', $titan->id)
+                ->orWhere('looser_b_titan_id', '=', $titan->id)
+                ->orWhere('looser_c_titan_id', '=', $titan->id)
+                ->orWhere('looser_d_titan_id', '=', $titan->id)
+                ->orWhere('looser_e_titan_id', '=', $titan->id)
                 ->delete();
             $titan->delete();
         }

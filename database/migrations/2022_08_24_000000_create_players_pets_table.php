@@ -17,10 +17,10 @@ class CreatePlayersPetsTable extends Migration
             $table->id();
             $table->integer('player_id')->index();
             $table->integer('pet_id')->index();
-            $table->integer('level');
-            $table->integer('power');
-            $table->tinyInteger('stars');
-            $table->tinyInteger('range_color');
+            $table->integer('level')->nullable();
+            $table->integer('power')->nullable();
+            $table->tinyInteger('stars')->nullable();
+            $table->tinyInteger('range_color')->nullable();
             $table->unique(['player_id', 'pet_id'], 'pk_players_pets');
         });
     }

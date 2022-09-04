@@ -17,14 +17,14 @@ class CreatePlayersTitansTable extends Migration
             $table->id();
             $table->integer('player_id')->index();
             $table->integer('titan_id')->index();
-            $table->integer('level');
-            $table->integer('power');
-            $table->tinyInteger('stars');
-            $table->tinyInteger('range_color');
-            $table->integer('stat_vitality');
-            $table->integer('stat_attack');
-            $table->integer('stat_elemental_damage');
-            $table->integer('stat_elemental_armor');
+            $table->integer('level')->nullable();
+            $table->integer('power')->nullable();
+            $table->tinyInteger('stars')->nullable();
+            $table->tinyInteger('range_color')->nullable();
+            $table->integer('stat_vitality')->nullable();
+            $table->integer('stat_attack')->nullable();
+            $table->integer('stat_elemental_damage')->nullable();
+            $table->integer('stat_elemental_armor')->nullable();
             $table->unique(['player_id', 'titan_id'], 'pk_players_titans');
         });
     }

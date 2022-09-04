@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'titan' => 'titan',
     'create_titan' => 'Crear titan',
     'titan_created' => 'El titan ha sido creado',
     'edit_titan' => 'Modificar titan',

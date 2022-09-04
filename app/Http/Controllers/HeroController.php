@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\HeroesTeamModel;
-use App\Models\HeroesTeamVSSimulatorModel;
 use App\Models\HeroModel;
 use App\Models\PlayerHeroModel;
+use App\Models\TeamHeroesFullInformationModel;
+use App\Models\TeamHeroesFullPowerModel;
+use App\Models\TeamHeroesWithPowerModel;
 use App\Models\WarDefenseHeroModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -179,18 +180,39 @@ class HeroController extends Controller
         {
             $hero->removeVSHero();
             PlayerHeroModel::where('hero_id', '=', $hero->id)->delete();
-            WarDefenseHeroModel::where('hero_id', '=', $hero->id)->delete();
-            HeroesTeamModel::where('a_hero_id', '=', $hero->id)
-                ->orWhere('b_hero_id', '=', $hero->id)
-                ->orWhere('c_hero_id', '=', $hero->id)
-                ->orWhere('d_hero_id', '=', $hero->id)
-                ->orWhere('e_hero_id', '=', $hero->id)
+            WarDefenseHeroModel::where('player_hero_id', '=', $hero->id)->delete();
+            TeamHeroesFullPowerModel::where('winner_a_hero_id', '=', $hero->id)
+                ->orWhere('winner_b_hero_id', '=', $hero->id)
+                ->orWhere('winner_c_hero_id', '=', $hero->id)
+                ->orWhere('winner_d_hero_id', '=', $hero->id)
+                ->orWhere('winner_e_hero_id', '=', $hero->id)
+                ->orWhere('looser_a_hero_id', '=', $hero->id)
+                ->orWhere('looser_b_hero_id', '=', $hero->id)
+                ->orWhere('looser_c_hero_id', '=', $hero->id)
+                ->orWhere('looser_d_hero_id', '=', $hero->id)
+                ->orWhere('looser_e_hero_id', '=', $hero->id)
                 ->delete();
-            HeroesTeamVSSimulatorModel::where('a_hero_id', '=', $hero->id)
-                ->orWhere('b_hero_id', '=', $hero->id)
-                ->orWhere('c_hero_id', '=', $hero->id)
-                ->orWhere('d_hero_id', '=', $hero->id)
-                ->orWhere('e_hero_id', '=', $hero->id)
+            TeamHeroesWithPowerModel::where('winner_a_hero_id', '=', $hero->id)
+                ->orWhere('winner_b_hero_id', '=', $hero->id)
+                ->orWhere('winner_c_hero_id', '=', $hero->id)
+                ->orWhere('winner_d_hero_id', '=', $hero->id)
+                ->orWhere('winner_e_hero_id', '=', $hero->id)
+                ->orWhere('looser_a_hero_id', '=', $hero->id)
+                ->orWhere('looser_b_hero_id', '=', $hero->id)
+                ->orWhere('looser_c_hero_id', '=', $hero->id)
+                ->orWhere('looser_d_hero_id', '=', $hero->id)
+                ->orWhere('looser_e_hero_id', '=', $hero->id)
+                ->delete();
+            TeamHeroesFullInformationModel::where('winner_a_hero_id', '=', $hero->id)
+                ->orWhere('winner_b_hero_id', '=', $hero->id)
+                ->orWhere('winner_c_hero_id', '=', $hero->id)
+                ->orWhere('winner_d_hero_id', '=', $hero->id)
+                ->orWhere('winner_e_hero_id', '=', $hero->id)
+                ->orWhere('looser_a_hero_id', '=', $hero->id)
+                ->orWhere('looser_b_hero_id', '=', $hero->id)
+                ->orWhere('looser_c_hero_id', '=', $hero->id)
+                ->orWhere('looser_d_hero_id', '=', $hero->id)
+                ->orWhere('looser_e_hero_id', '=', $hero->id)
                 ->delete();
             $hero->delete();
         }

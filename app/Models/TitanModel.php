@@ -24,6 +24,25 @@ class TitanModel extends Model
     const ELEMENT_WATER = 1;
     const ELEMENT_EARTH = 2;
 
+    const START_ONE = 1;
+    const START_TWO = 2;
+    const START_THREE = 3;
+    const START_FOUR = 4;
+    const START_FIVE = 5;
+    const START_SIX = 6;
+
+    public static function getStars ()
+    {
+        return [
+            self::START_ONE,
+            self::START_TWO,
+            self::START_THREE,
+            self::START_FOUR,
+            self::START_FIVE,
+            self::START_SIX,
+        ];
+    }
+
     public static function getElements()
     {
         return [
@@ -31,6 +50,12 @@ class TitanModel extends Model
             self::ELEMENT_WATER => ucfirst(__('titan.water')),
             self::ELEMENT_EARTH => ucfirst(__('titan.earth')),
         ];
+    }
+
+    public function getElement ( $element )
+    {
+        $elements = self::getElements();
+        return $elements[$element];
     }
 
     public function getTitansVSA () : array
