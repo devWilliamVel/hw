@@ -25,7 +25,7 @@ class CreateTeamsTitansFullPowerTable extends Migration
             $table->integer('looser_c_titan_id')->index()->nullable();
             $table->integer('looser_d_titan_id')->index()->nullable();
             $table->integer('looser_e_titan_id')->index()->nullable();
-            $table->date('created_at')->default(\Illuminate\Support\Facades\DB::raw('CURRENT_DATE'));
+            $table->timestamps();
         });
     }
 

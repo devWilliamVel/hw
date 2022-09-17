@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class TeamHeroesFullPowerModel extends Model
 {
-    public $timestamps = false;
+    public $timestamps = true;
 
     protected $table = 'teams_heroes_full_power';
     protected $primaryKey = 'id';
@@ -25,5 +25,6 @@ class TeamHeroesFullPowerModel extends Model
         'looser_e_hero_id',
         'looser_pet_id',
         'created_at',
+        'updated_at',
     ];
 }

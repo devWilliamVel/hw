@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class TeamHeroesFullInformationModel extends Model
 {
-    public $timestamps = false;
+    public $timestamps = true;
 
     protected $table = 'teams_heroes_full_information';
     protected $primaryKey = 'id';
@@ -73,5 +73,6 @@ class TeamHeroesFullInformationModel extends Model
         'looser_pet_range',
 
         'created_at',
+        'updated_at',
     ];
 }

@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class TeamTitansWithPowerModel extends Model
 {
-    public $timestamps = false;
+    public $timestamps = true;
 
     protected $table = 'teams_titans_with_power';
     protected $primaryKey = 'id';
@@ -33,5 +33,6 @@ class TeamTitansWithPowerModel extends Model
         'looser_e_titan_id',
         'looser_e_titan_power',
         'created_at',
+        'updated_at',
     ];
 }

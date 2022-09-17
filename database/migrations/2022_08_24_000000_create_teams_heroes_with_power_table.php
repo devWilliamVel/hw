@@ -39,7 +39,7 @@ class CreateTeamsHeroesWithPowerTable extends Migration
             $table->integer('looser_e_hero_power')->nullable();
             $table->integer('looser_pet_id')->index()->nullable();
             $table->integer('looser_pet_power')->nullable();
-            $table->date('created_at')->default(\Illuminate\Support\Facades\DB::raw('CURRENT_DATE'));
+            $table->timestamps();
         });
     }
 

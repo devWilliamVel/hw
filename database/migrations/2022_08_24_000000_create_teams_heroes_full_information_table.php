@@ -75,7 +75,7 @@ class CreateTeamsHeroesFullInformationTable extends Migration
             $table->tinyInteger('looser_pet_stars')->nullable();
             $table->tinyInteger('looser_pet_range')->nullable();
 
-            $table->date('created_at')->default(\Illuminate\Support\Facades\DB::raw('CURRENT_DATE'));
+            $table->timestamps();
         });
     }
 

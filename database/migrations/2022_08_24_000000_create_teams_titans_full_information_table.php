@@ -47,7 +47,7 @@ class CreateTeamsTitansFullInformationTable extends Migration
             $table->integer('looser_e_titan_power')->nullable();
             $table->tinyInteger('looser_e_titan_stars')->nullable();
 
-            $table->date('created_at')->default(\Illuminate\Support\Facades\DB::raw('CURRENT_DATE'));
+            $table->timestamps();
         });
     }
 
