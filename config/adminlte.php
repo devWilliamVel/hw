@@ -63,8 +63,8 @@ return [
     |
     */
 
-    'logo' => '<b>Z</b>',
-    'logo_img' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
+    'logo' => '<b>HERO-WARS</b>',
+    'logo_img' => 'img/logo/hw_logo.png',
     'logo_img_class' => 'brand-image img-circle elevation-3',
     'logo_img_xl' => null,
     'logo_img_xl_class' => 'brand-image-xs',
@@ -295,66 +295,87 @@ return [
             'label_color' => 'success',
         ],*/
         [
+            'text' => 'USUARIOS',
+            'icon' => 'fas fa-users-cog',
+            'submenu' => [
+                [
+                    'text' => 'Lista usuarios',
+                    'url'  => 'users',
+                    'icon' => 'fas fa-user-friends',
+                ],
+                [
+                    'text' => 'Registrar usuario',
+                    'url'  => 'user/register',
+                    'icon' => 'fas fa-user-plus',
+                ],
+                [
+                    'text' => 'Roles y permisos',
+                    'url'  => 'admin/rolesAndPermissions',
+                    'icon' => 'fas fa-user-tag',
+                ],
+            ]
+        ],
+        [
             'text' => 'PERSONAJES',
-            'icon' => 'fas fa-fw fa-user',
+            'icon' => 'fas fa-users-cog',
             'submenu' => [
                 [
                     'text' => 'Heroes',
                     'url'  => 'heroes',
-                    'icon' => 'fas fa-fw fa-user',
+                    'icon' => 'fas fa-mask',
                 ],
                 [
                     'text' => 'Mascotas',
                     'url'  => 'pets',
-                    'icon' => 'fas fa-fw fa-user',
+                    'icon' => 'fas fa-dog',
                 ],
                 [
                     'text' => 'Titanes',
                     'url'  => 'titans',
-                    'icon' => 'fas fa-fw fa-user',
+                    'icon' => 'fab fa-wolf-pack-battalion',
                 ],
             ]
         ],
         [
             'text' => 'GREMIOS',
-            'icon' => 'fas fa-fw fa-user',
+            'icon' => 'fas fa-city',
             'submenu' => [
                 [
                     'text' => 'lista',
                     'url'  => 'guilds',
-                    'icon' => 'fas fa-fw fa-user',
+                    'icon' => 'fas fa-building',
                 ],
                 [
                     'text' => 'los zorros',
                     'url'  => 'guild/1',
-                    'icon' => 'fas fa-fw fa-user',
+                    'icon' => 'fas fa-star',
                 ],
             ]
         ],
         [
             'text' => 'JUGADORES',
-            'icon' => 'fas fa-fw fa-user',
+            'icon' => 'fas fa-users',
             'submenu' => [
                 [
                     'text' => 'lista',
                     'url'  => 'players',
-                    'icon' => 'fas fa-fw fa-user',
+                    'icon' => 'fas fa-users',
                 ]
             ]
         ],
         [
             'text' => 'COMBATES',
-            'icon' => 'fas fa-fw fa-user',
+            'icon' => 'fas fa-fist-raised',
             'submenu' => [
                 [
                     'text' => 'entre heroes',
                     'url'  => 'combats/heroes',
-                    'icon' => 'fas fa-fw fa-user',
+                    'icon' => 'fas fa-fist-raised',
                 ],
                 [
                     'text' => 'entre titanes',
                     'url'  => 'combats/titans',
-                    'icon' => 'fas fa-fw fa-user',
+                    'icon' => 'fas fa-balance-scale-right',
                 ],
             ]
         ],

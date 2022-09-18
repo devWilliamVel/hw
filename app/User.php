@@ -5,10 +5,28 @@ namespace App;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
     use Notifiable;
+    use HasRoles {
+        hasPermissionTo as hasPermissionToOriginal;
+    }
+
+    public function hasPermissionTo($permission, $guardName = 'web'): bool
+    {
+        // Since this method comes from a trait,
+        // you cannot simply `parent::hasPermissionTo($permission, '*')`.
+        // You'll have to copy the entire body of the method into yours.
+        // Just replace '*' with the "guard" name from above.
+        return $this->hasPermissionToOriginal($permission, $guardName);
+    }
+
+    protected function getDefaultGuardName(): string
+    {
+        return 'web';
+    }
 
     /**
      * The attributes that are mass assignable.
@@ -16,7 +34,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'active', 'is_admin','failed_login_attempts'
     ];
 
     /**
@@ -36,4 +54,14 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function isAdmin()
+    {
+        return intval($this->is_admin) > 0;
+    }
+
+    public function isActive()
+    {
+        return intval($this->active) > 0;
+    }
 }

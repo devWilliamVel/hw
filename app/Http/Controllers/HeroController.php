@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Libraries\Permissions;
 use App\Models\HeroModel;
 use App\Models\PlayerHeroModel;
 use App\Models\TeamHeroesFullInformationModel;
@@ -13,6 +14,23 @@ use Illuminate\Support\Facades\DB;
 
 class HeroController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['permission:' . Permissions::PERM_READ_HEROES_LIST])
+            ->only([
+                "index",
+            ]);
+
+        $this->middleware(['role:' . Permissions::ROLE_SUPER_ADMIN])
+            ->only([
+                "create",
+                "store",
+                "edit",
+                "update",
+                "delete",
+            ]);
+    }
+
     public function index ()
     {
         $heroes = HeroModel::all();

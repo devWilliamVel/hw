@@ -1,0 +1,28 @@
+.content-wrapper { background-color: #fff!important; }
+.sidebar-dark-primary{
+    background-color: #082743!important;
+}
+.wv-primary {
+    background-color: #082743 !important;
+    border-color: #082743 !important;
+}
+.dataTable>thead{
+    background-color: #082743;
+    color: #fff;
+}
+.form-group-create-per {
+    margin-bottom: 0.5rem !important;
+}
+fieldset{
+    background-color: #f1f1f1;
+    border: 1px solid #cac1c1 !important;
+    padding: 0 0.5em 0.5em 0.5em !important;
+    margin: 0.5em !important;
+}
+fieldset>.title {
+    background-color: #082743;
+    color: #ffffff;
+    justify-content: center;
+    font-weight: 600;
+    padding: 5px;
+}

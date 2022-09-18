@@ -11,7 +11,7 @@
                 <div class="btn btn-success m-1" data-toggle="modal" data-target="#createGuildModal">{{ __('guild.create_guild') }}</div>
             </div>
             <div class="col-12">
-                <table id="guilds_table" class="display">
+                <table id="guilds_table" class="display w-100">
                     <thead>
                     <tr>
                         <th>{{ strtoupper(__('table.actions')) }}</th>
@@ -116,7 +116,9 @@
 
         $(document).ready( function () {
             $('#guilds_table').DataTable({
-                //'searching': false
+                searching: true,
+                scrollX: true,
+                language: datatable_translation
             });
         } );
 

@@ -1,6 +1,9 @@
 <?php
 
 return [
+    'password'=>'password',
+    'email'=>'email',
+    'login'=>'login',
     'expel' => 'expulsar',
     'rename' => 'renombrar',
     'guild' => 'gremio',

@@ -12,7 +12,7 @@
             </div>
 
             <div class="col-12">
-                <table id="pets_table" class="display">
+                <table id="pets_table" class="display w-100">
                     <thead>
                     <tr>
                         <th>{{ strtoupper(__('table.actions')) }}</th>
@@ -87,7 +87,8 @@
 
         $(document).ready( function () {
             $('#pets_table').DataTable({
-                //'searching': false
+                scrollX: true,
+                language: datatable_translation
             });
         } );
 
