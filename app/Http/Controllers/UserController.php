@@ -6,6 +6,7 @@ use App\Http\Requests\PasswordRequest;
 use App\Http\Requests\RegisterUserRequest;
 use App\Http\Requests\UserUpdateRequest;
 use App\Libraries\Permissions;
+use App\Models\PlayerModel;
 use App\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
@@ -22,6 +23,27 @@ class UserController extends Controller
     public function __construct()
     {
         $this->middleware('admin')->except(['login', 'profile', 'updateUserProfile', 'updateUserPassword']);
+    }
+
+    public function index ()
+    {
+        $users = User::all();
+
+        foreach ($users as $user)
+        {
+            if ( empty($user->player_id) )
+            {
+                $user->player = '';
+            }
+            else
+            {
+                $player = PlayerModel::find($user->player_id);
+                $user->player = $player->name;
+            }
+        }
+
+        return view('users.list')
+            ->with('users',$users);
     }
 
     public function login(Request $request)
@@ -83,54 +105,68 @@ class UserController extends Controller
 
         $id = intval($id);
         $user = User::find($id);
-        $loggedUser = Auth::user();
 
-        if ( ! Auth::user()->hasRole([Permissions::ROLE_SUPER_ADMIN]) && $user->id !== $loggedUser->id )
+        if ( $this->checkUserPermissions($user) )
         {
-            return redirect('home');
+            if ( empty($user->id) )
+                return redirect('users');
+
+            $player = PlayerModel::find((int)$user->player_id);
+            $notAssignedPlayers = PlayerModel::getNotAssignedPlayers();
+
+            return view('users.edit')
+                ->with('user', $user)
+                ->with('player', $player)
+                ->with('notAssignedPlayers', $notAssignedPlayers);
         }
 
-        if ( empty($user->id) )
-            return redirect('users');
-
-        return view('users.edit')
-            ->with('user', $user);
+        return redirect('home');
     }
 
     public function updateUser(UserUpdateRequest $request, $id) {
         $id = intval($id);
         $user = User::find($id);
 
-        if ( empty($user->id) )
-            return redirect('users');
+        if ( $this->checkUserPermissions($user) )
+        {
+            if ( empty($user->id) )
+                return redirect('users');
 
-        $oldActive = intval($user->active);
-        $active = $request->input('active') ? 1 : 0;
+            $oldActive = intval($user->active);
+            $active = $request->input('active') ? 1 : 0;
 
-        $user->name = $request->input('name');
-        $user->email = strtolower(trim($request->input('email')));
-        $user->active = $active;
-        $user->is_admin = $request->input('is_admin') ? 1 : 0;
-        if ( ! $active || (! $oldActive && $active) )
-            $user->failed_login_attempts = 0;
+            $user->name = $request->input('name');
+            $user->email = strtolower(trim($request->input('email')));
+            $user->active = $active;
+            $user->is_admin = $request->input('is_admin') ? 1 : 0;
+            if ( ! $active || (! $oldActive && $active) )
+                $user->failed_login_attempts = 0;
 
-        $user->update();
+            $user->update();
 
-        return back()->with('successMsg', "L'utente è stato aggiornato");
+            return back()->with('successMsg', "user updated");
+        }
+
+        return back()->with('errorMsg', "You need permission for this action");
     }
 
     public function updatePassword(PasswordRequest $request, $id) {
         $id = intval($id);
         $user = User::find($id);
 
-        if ( empty($user->id) )
-            return redirect('users');
+        if ( $this->checkUserPermissions($user) )
+        {
+            if ( empty($user->id) )
+                return redirect('users');
 
-        $user->password = Hash::make($request->input('password'));
-        $user->updated_at = date('Y-m-d H:i:s');
-        $user->update();
+            $user->password = Hash::make($request->input('password'));
+            $user->updated_at = date('Y-m-d H:i:s');
+            $user->update();
 
-        return back()->with('status', 'La password è stata aggiornata');
+            return back()->with('status', 'The password was changed');
+        }
+
+        return back()->with('errorMsg', "You need permission for this action");
     }
 
     public function enableDisableUser(Request $request)
@@ -213,5 +249,18 @@ class UserController extends Controller
         $user->update();
 
         return back()->with('status', 'La password è stata aggiornata');
+    }
+
+    public function setPlayer ( Request $request )
+    {
+
+    }
+
+    private function checkUserPermissions (User $user)
+    {
+        $loggedUser = Auth::user();
+
+        return $loggedUser->hasRole([Permissions::ROLE_SUPER_ADMIN])
+            || ( $loggedUser->is_admin == 1 && ( $user->id == $loggedUser->id || $user->is_admin == 0 ) );
     }
 }

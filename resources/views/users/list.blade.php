@@ -15,22 +15,21 @@
 @section('content')
     <div class="container-fluid">
         <div class="row justify-content-center">
-            <h2>UTENTI</h2>
+            <h2>{{ strtoupper(__('users.users')) }}</h2>
         </div>
 
         <div class="container-fluid">
 
-            <table id="usersTable" class="datatable-responsive display nowrap mt-2 w-100">
+            <table id="usersTable" class="display w-100">
                 <thead class="dataTableHead">
                 <tr>
                     <th class="sorting" tabindex="0" aria-controls="usersTable"></th>
-                    <th class="sorting_asc" tabindex="1" aria-controls="usersTable">Id</th>
-                    <th class="sorting" tabindex="2" aria-controls="usersTable">Attivo</th>
-                    <th class="sorting" tabindex="3" aria-controls="usersTable">Admin</th>
-                    <th class="sorting" tabindex="4" aria-controls="usersTable">Nome</th>
-                    <th class="sorting" tabindex="5" aria-controls="usersTable">Email</th>
-                    <th class="sorting" tabindex="6" aria-controls="usersTable">Data Registrazione</th>
-                    <th class="sorting" tabindex="7" aria-controls="usersTable">Ultima modifica</th>
+                    <th class="sorting_asc" tabindex="1" aria-controls="usersTable">{{ __('users.player') }}</th>
+                    <th class="sorting" tabindex="2" aria-controls="usersTable">{{ __('users.active') }}</th>
+                    <th class="sorting" tabindex="3" aria-controls="usersTable">{{ __('users.admin') }}</th>
+                    <th class="sorting" tabindex="4" aria-controls="usersTable">{{ __('users.name') }}</th>
+                    <th class="sorting" tabindex="5" aria-controls="usersTable">{{ __('users.email') }}</th>
+                    <th class="sorting" tabindex="6" aria-controls="usersTable">{{ __('users.updated_at') }}</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -44,50 +43,55 @@
                                 <i class="fas fa-trash-alt primaryColor"></i>
                             </a>--}}
                         </td>
-                        <td class="text-center">{{ $user->id }}</td>
+                        <td class="text-center">{{ $user->player }}</td>
                         <td class="text-center">
                             @if ( intval($user->active) )
-                                <div class="btn btn-sm btn-danger" style="border-radius: 15px" onclick="enableDisableUser({{$user->id}})">DISATTIVA</div>
+                                <div class="btn btn-sm btn-danger" style="border-radius: 15px" onclick="enableDisableUser({{$user->id}})">{{ __('users.disable') }}</div>
                             @else
-                                <div class="btn btn-sm btn-success" style="border-radius: 15px" onclick="enableDisableUser({{$user->id}})">ATTIVA</div>
+                                <div class="btn btn-sm btn-success" style="border-radius: 15px" onclick="enableDisableUser({{$user->id}})">{{ __('users.enable') }}</div>
                             @endif
                         </td>
-                        <td class="text-center">{{ $user->is_admin }}</td>
+                        <td class="text-center">
+                            @if ( $user->is_admin )
+                                {{ __('users.yes') }}
+                            @endif
+                        </td>
                         <td>{{ $user->name }}</td>
                         <td>{{ $user->email }}</td>
-                        <td class="text-center">{{ $user->created_at }}</td>
                         <td class="text-center">{{ $user->updated_at }}</td>
                     </tr>
                 @endforeach
                 </tbody>
-                {{--<tfoot class="dataTableHead">
-                <tr>
-                    <th></th>
-                    <th>Id</th>
-                    <th>Attivo</th>
-                    <th>Admin</th>
-                    <th>Nome</th>
-                    <th>Email</th>
-                    <th>Data Registrazione</th>
-                    <th>Ultima modifica</th>
-                </tr>
-                </tfoot>--}}
             </table>
         </div>
     </div>
 @stop
 
-@section('extraScripts')
-    <script src="{{ url('/') }}/js/plugins/bootstrap.bundle.min.js"></script>
-    <script src="{{ url('/') }}/js/plugins/jquery.dataTables.min.js"></script>
-    <script src="{{ url('/') }}/js/plugins/dataTables.bootstrap4.min.js"></script>
-    <script src="{{ url('/') }}/js/plugins/dataTables.responsive.min.js"></script>
-    <script src="{{ url('/') }}/js/plugins/responsive.bootstrap4.min.js"></script>
-@stop
+@section('css')
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">
+@endsection
 
-@section('personalizedScripts')
-    <script src="{{ getCssJsPath('js/users.js') }}"></script>
-@stop
+@section('js')
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
 
-@section('extraContent')
-@stop
+    <script>
+        @if ( isset($errorMsg) && strlen($errorMsg) )
+        alert('{{ $errorMsg }}');
+        @elseif ( isset($successMsg) && strlen($successMsg) )
+        alert('{{ $successMsg }}');
+        @endif
+
+        $(document).ready( function () {
+            $('#usersTable').DataTable({
+                scrollX: true,
+                language: datatable_translation
+            });
+        } );
+
+        function deleteHero (_playerId) {
+            if ( confirm('{{ __('hero.confirm_to_delete') }}') )
+                if ( confirm('{{ __('hero.confirm_again_to_delete') }}') )
+                    $('#deleteHeroForm_' + _playerId).submit();
+        }
+    </script>
+@endsection

@@ -60,14 +60,18 @@ Route::middleware('auth:web')->group(function () {
     /** USERS */
     Route::get('users', [UserController::class,'index'])->name('users.list');
     Route::post('users/enable-disable', [UserController::class,'enableDisableUser'])->name('users.enableDisable');
-    Route::get('user/register', [RegisterController::class,'showRegistrationForm'])->name('register');
-    Route::post('user/register', [UserController::class,'register']);
-    Route::get('user/edit/{id}', [UserController::class,'edit'])->name('user.edit');
-    Route::post('user/update/{id}', [UserController::class,'updateUser'])->name('user.update');
-    Route::post('user/update-password/{id}', [UserController::class,'updatePassword'])->name('user.updatePassword');
-    Route::get('user/profile', [UserController::class,'profile'])->name('user.profile');
-    Route::post('user/update-data', [UserController::class,'updateUserProfile'])->name('user.update.profile');
-    Route::post('user/update-password', [UserController::class,'updateUserPassword'])->name('user.updatePassword.profile');
+    Route::prefix('user')->group(function(){
+        Route::get('register', [RegisterController::class,'showRegistrationForm'])->name('register');
+        Route::post('register', [UserController::class,'register']);
+        Route::get('edit/{id}', [UserController::class,'edit'])->name('user.edit');
+        Route::post('update/{id}', [UserController::class,'updateUser'])->name('user.update');
+        Route::post('update-password/{id}', [UserController::class,'updatePassword'])->name('user.updatePassword');
+        Route::get('profile', [UserController::class,'profile'])->name('user.profile');
+        Route::post('update-data', [UserController::class,'updateUserProfile'])->name('user.update.profile');
+        Route::post('update-password', [UserController::class,'updateUserPassword'])->name('user.updatePassword.profile');
+        Route::post('set-user-player', [UserController::class,'setPlayer'])->name('user.setPlayer');
+    });
+
 
     Route::get('guilds', [GuildController::class, 'index']);
     Route::prefix('guild')->name('guild')->group(function(){
