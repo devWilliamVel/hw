@@ -21,10 +21,10 @@ class CombatsController extends Controller
 {
     public function heroesCombats()
     {
-        $heroes = HeroModel::all();
+        $heroes = HeroModel::orderBy('name','asc')->get();
         $heroStars = HeroModel::getStars();
         $heroRanges = HeroModel::getRanges();
-        $pets = PetModel::all();
+        $pets = PetModel::orderBy('name','asc')->get();
         $petStars = PetModel::getStars();
         $petRanges = PetModel::getRanges();
 
@@ -277,7 +277,7 @@ class CombatsController extends Controller
 
     public function titansCombats()
     {
-        $titans = TitanModel::all();
+        $titans = TitanModel::orderBy('name','asc')->get();
         $stars = TitanModel::getStars();
 
         $successMsg = session('successMsg') ?? '';
