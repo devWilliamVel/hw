@@ -23,6 +23,8 @@ class TitanModel extends Model
     const ELEMENT_FIRE = 0;
     const ELEMENT_WATER = 1;
     const ELEMENT_EARTH = 2;
+    const ELEMENT_DARK = 3;
+    const ELEMENT_LIGHT = 4;
 
     const START_ONE = 1;
     const START_TWO = 2;
@@ -49,6 +51,8 @@ class TitanModel extends Model
             self::ELEMENT_FIRE => ucfirst(__('titan.fire')),
             self::ELEMENT_WATER => ucfirst(__('titan.water')),
             self::ELEMENT_EARTH => ucfirst(__('titan.earth')),
+            self::ELEMENT_DARK => ucfirst(__('titan.dark')),
+            self::ELEMENT_LIGHT => ucfirst(__('titan.light')),
         ];
     }
 

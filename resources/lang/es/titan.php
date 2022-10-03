@@ -21,4 +21,6 @@ return [
     'fire' => 'fuego',
     'water' => 'agua',
     'earth' => 'tierra',
+    'dark' => 'oscuridad',
+    'light' => 'luz',
 ];
